@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"org.strassburger.abomanager","c":"App","l":"App()","u":"%3Cinit%3E()"},{"p":"org.strassburger.abomanager","c":"App","l":"main(String[])","u":"main(java.lang.String[])"}];updateSearchResults();
