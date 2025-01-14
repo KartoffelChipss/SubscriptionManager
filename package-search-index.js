@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.strassburger.abomanager"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.strassburger.abomanager"},{"l":"org.strassburger.abomanager.jooq"},{"l":"org.strassburger.abomanager.jooq.tables"},{"l":"org.strassburger.abomanager.jooq.tables.records"}];updateSearchResults();

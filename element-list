@@ -1,1 +1,4 @@
 org.strassburger.abomanager
+org.strassburger.abomanager.jooq
+org.strassburger.abomanager.jooq.tables
+org.strassburger.abomanager.jooq.tables.records
