@@ -1,5 +1,6 @@
 .idea/
 .env
+src/main/resources/subscription_manager.db
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,maven,intellij+all,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,maven,intellij+all,visualstudiocode
