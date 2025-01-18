@@ -128,7 +128,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.strassburger.abomanager.App</mainClass>
+                            <mainClass>org.strassburger.abomanager.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -176,7 +176,7 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.strassburger.abomanager.App</mainClass>
+                                    <mainClass>org.strassburger.abomanager.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
