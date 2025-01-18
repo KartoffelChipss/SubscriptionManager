@@ -2,3 +2,8 @@ org.strassburger.abomanager
 org.strassburger.abomanager.jooq
 org.strassburger.abomanager.jooq.tables
 org.strassburger.abomanager.jooq.tables.records
+org.strassburger.abomanager.model
+org.strassburger.abomanager.model.entity
+org.strassburger.abomanager.model.repositories
+org.strassburger.abomanager.presenter
+org.strassburger.abomanager.view
