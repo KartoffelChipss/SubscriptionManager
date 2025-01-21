@@ -13,7 +13,7 @@ public class SQLiteDatabaseManager extends DatabaseManager {
 
     public SQLiteDatabaseManager() {
         try {
-            final String databaseUrl = "jdbc:sqlite:src/main/resources/subscription_manager.dbe";
+            final String databaseUrl = "jdbc:sqlite:src/main/resources/subscription_manager.db";
             Connection connection = DriverManager.getConnection(databaseUrl);
 
             this.dslContext = DSL.using(connection, SQLDialect.SQLITE);
