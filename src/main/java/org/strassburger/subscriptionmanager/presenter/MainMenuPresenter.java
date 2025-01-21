@@ -1,8 +1,8 @@
 package org.strassburger.subscriptionmanager.presenter;
 
 import org.strassburger.subscriptionmanager.model.DatabaseManager;
+import org.strassburger.subscriptionmanager.view.AddSubscriptionView;
 import org.strassburger.subscriptionmanager.view.MainMenuView;
-import org.strassburger.tui4j.formatting.Printer;
 
 public class MainMenuPresenter {
     private final MainMenuView view;
@@ -15,25 +15,31 @@ public class MainMenuPresenter {
 
     public void start() {
         while (true) {
-            String choice = view.getMainMenuSelection();
+            MainMenuOption choice = view.getMainMenuSelection();
             switch (choice) {
-                case "Select Profile":
-                    // TODO: Handle profile selection
-                    Printer.println("&eFeature not implemented yet.");
-                    break;
-                case "Create Profile":
-                    // TODO: Handle profile creation
-                    Printer.println("&eFeature not implemented yet.");
-                    break;
-                case "Delete Profile":
-                    // TODO: Handle profile deletion
-                    Printer.println("&eFeature not implemented yet.");
+                case MainMenuOption.ADD_SUBSCRIPTION:
+                    new AddSubscriptionPresenter(new AddSubscriptionView(), dbManager).start();
                     break;
                 default:
                     view.showGoodbyeMessage();
                     System.exit(0);
                     return;
             }
+        }
+    }
+
+    public enum MainMenuOption {
+        ADD_SUBSCRIPTION("Add Subscription"),
+        EXIT("Exit");
+
+        private final String label;
+
+        MainMenuOption(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
         }
     }
 }
