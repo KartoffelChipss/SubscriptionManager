@@ -1,7 +1,7 @@
-package org.strassburger.abomanager.presenter;
+package org.strassburger.subscriptionmanager.presenter;
 
-import org.strassburger.abomanager.model.DatabaseManager;
-import org.strassburger.abomanager.view.MainMenuView;
+import org.strassburger.subscriptionmanager.model.DatabaseManager;
+import org.strassburger.subscriptionmanager.view.MainMenuView;
 import org.strassburger.tui4j.formatting.Printer;
 
 public class MainMenuPresenter {

@@ -1,7 +1,7 @@
-package org.strassburger.abomanager.model.repositories;
+package org.strassburger.subscriptionmanager.model.repositories;
 
 import org.jooq.DSLContext;
-import org.strassburger.abomanager.model.entity.Profile;
+import org.strassburger.subscriptionmanager.model.entity.Profile;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.strassburger.abomanager.model;
+package org.strassburger.subscriptionmanager.model;
 
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;

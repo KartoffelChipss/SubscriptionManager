@@ -1,7 +1,7 @@
-package org.strassburger.abomanager.model;
+package org.strassburger.subscriptionmanager.model;
 
 import org.jooq.DSLContext;
-import org.strassburger.abomanager.model.repositories.ProfileRepository;
+import org.strassburger.subscriptionmanager.model.repositories.ProfileRepository;
 
 public abstract class DatabaseManager {
 

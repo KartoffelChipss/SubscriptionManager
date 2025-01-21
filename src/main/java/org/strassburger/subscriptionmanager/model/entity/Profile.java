@@ -1,4 +1,4 @@
-package org.strassburger.abomanager.model.entity;
+package org.strassburger.subscriptionmanager.model.entity;
 
 public class Profile {
     private final int id;

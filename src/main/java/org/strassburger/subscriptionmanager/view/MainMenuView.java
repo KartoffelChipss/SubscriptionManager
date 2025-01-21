@@ -1,4 +1,4 @@
-package org.strassburger.abomanager.view;
+package org.strassburger.subscriptionmanager.view;
 
 import org.strassburger.tui4j.formatting.Printer;
 import org.strassburger.tui4j.input.SelectInput;

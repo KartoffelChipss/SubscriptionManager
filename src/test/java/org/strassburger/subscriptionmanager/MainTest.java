@@ -1,4 +1,4 @@
-package org.strassburger.abomanager;
+package org.strassburger.subscriptionmanager;
 
 import static org.junit.Assert.assertTrue;
 

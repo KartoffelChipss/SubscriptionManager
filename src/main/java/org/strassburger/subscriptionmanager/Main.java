@@ -1,9 +1,9 @@
-package org.strassburger.abomanager;
+package org.strassburger.subscriptionmanager;
 
-import org.strassburger.abomanager.model.DatabaseManager;
-import org.strassburger.abomanager.model.SQLiteDatabaseManager;
-import org.strassburger.abomanager.presenter.MainMenuPresenter;
-import org.strassburger.abomanager.view.MainMenuView;
+import org.strassburger.subscriptionmanager.model.DatabaseManager;
+import org.strassburger.subscriptionmanager.model.SQLiteDatabaseManager;
+import org.strassburger.subscriptionmanager.presenter.MainMenuPresenter;
+import org.strassburger.subscriptionmanager.view.MainMenuView;
 
 import java.util.logging.LogManager;
 
