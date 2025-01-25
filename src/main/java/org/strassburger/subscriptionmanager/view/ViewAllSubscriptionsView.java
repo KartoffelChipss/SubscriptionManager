@@ -89,15 +89,13 @@ public class ViewAllSubscriptionsView {
      * @return Date as String.
      */
     private String convertLongToDate(Long dateLong) {
-        if (dateLong != null) {
-            Date date = new Date(dateLong);
+        if (dateLong == null) return "/";
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
+        Date date = new Date(dateLong);
 
-            return calendar.get(Calendar.DAY_OF_MONTH) + "." + (calendar.get(Calendar.MONTH) + 1) + "." + calendar.get(Calendar.YEAR);
-        } else {
-            return "/";
-        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        return calendar.get(Calendar.DAY_OF_MONTH) + "." + (calendar.get(Calendar.MONTH) + 1) + "." + calendar.get(Calendar.YEAR);
     }
 }
