@@ -4,12 +4,12 @@
 
 A simple subscription manager application that allows you to get an overview of your subscriptions, how much you spend on them and when they are due. You can add every kind of subscription, organize them in categories and configure multiple profiles to keep track of subscriptions for different people.
 
-## System Requirements
+## 🛠️ System Requirements
 
 - **Java Version**: Java 21 or higher
 - **Maven Version**: Apache Maven 3.9.9
 
-## Installation
+## 📦 Installation
 
 1. Clone the repository and navigate to the project directory:
    ```bash
@@ -21,7 +21,7 @@ A simple subscription manager application that allows you to get an overview of 
    mvn clean install
    ```
 
-## Quick Start
+## ⚡ Quick Start
 
 To run the application, use one of the following commands:
 
@@ -34,6 +34,6 @@ To run the application, use one of the following commands:
    mvn exec:java -Dexec.mainClass="org.strassburger.subscriptionmanager.Main"
    ```
 
-### Expected Behavior
+### 🎯 Expected Behavior
 - Upon starting the application, you should see the main menu.
 - Use the options to navigate through the application.
