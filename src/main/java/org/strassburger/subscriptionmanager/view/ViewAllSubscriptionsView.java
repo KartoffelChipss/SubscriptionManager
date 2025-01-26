@@ -1,5 +1,6 @@
 package org.strassburger.subscriptionmanager.view;
 
+import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
 import org.strassburger.subscriptionmanager.model.entity.Subscription;
 import org.strassburger.tui4j.formatting.Printer;
 import org.strassburger.tui4j.input.ContinueInput;
@@ -15,7 +16,7 @@ public class ViewAllSubscriptionsView {
     }
 
     public void showAllSubscriptions(List<Subscription> subList) {
-        List<String> headers = List.of("Name", "Price", "Billing Period", "Start date");
+        List<String> headers = List.of("Name", "Price", "Normalized Price", "Start date");
         List<Integer> columnWidths = calculateColumnWidths(headers, subList);
 
         printHeader(headers, columnWidths);
@@ -23,7 +24,7 @@ public class ViewAllSubscriptionsView {
         printSeparator(columnWidths);
 
         String rowFormat = String.format(
-                " %%-%ds &8|&r %%-%d.2f &8|&r %%-%ds &8|&r %%-%ds",
+                " %%-%ds &8|&r %%-%ds &8|&r %%-%ds &8|&r %%-%ds",
                 columnWidths.get(0), columnWidths.get(1), columnWidths.get(2), columnWidths.get(3)
         );
 
@@ -32,8 +33,8 @@ public class ViewAllSubscriptionsView {
             Printer.printfln(
                     rowFormat,
                     subscription.getName(),
-                    subscription.getPrice(),
-                    subscription.getBillingPeriod(),
+                    String.format("%.2f", subscription.getPrice()) + subscription.getBillingPeriod().getPriceString(),
+                    String.format("%.2f", subscription.getNormalizedPrice()) +BillingPeriod.MONTHLY.getPriceString(),
                     startDateString
             );
         }
@@ -50,8 +51,12 @@ public class ViewAllSubscriptionsView {
 
         for (Subscription subscription : subList) {
             columnWidths.set(0, Math.max(columnWidths.get(0), subscription.getName().length()));
-            columnWidths.set(1, Math.max(columnWidths.get(1), String.format("%.2f", subscription.getPrice()).length()));
-            columnWidths.set(2, Math.max(columnWidths.get(2), subscription.getBillingPeriod().toString().length()));
+            columnWidths.set(1, Math.max(columnWidths.get(1), (
+                    String.format("%.2f", subscription.getPrice()) + subscription.getBillingPeriod().getPriceString()
+            ).length()));
+            columnWidths.set(2, Math.max(columnWidths.get(2), (
+                    String.format("%.2f", subscription.getNormalizedPrice()) + BillingPeriod.MONTHLY.getPriceString()
+            ).length()));
             columnWidths.set(3, Math.max(columnWidths.get(3), convertLongToDate(subscription.getStartDate()).length()));
         }
 

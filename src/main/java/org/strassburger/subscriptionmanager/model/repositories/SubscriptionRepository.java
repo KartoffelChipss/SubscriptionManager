@@ -2,12 +2,15 @@ package org.strassburger.subscriptionmanager.model.repositories;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.impl.QOM;
 import org.strassburger.subscriptionmanager.jooq.tables.Subscriptions;
 import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
 import org.strassburger.subscriptionmanager.model.entity.Subscription;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.strassburger.subscriptionmanager.util.PriceNormalizer.normalizePrice;
 
 public class SubscriptionRepository {
     private final DSLContext dsl;
@@ -29,7 +32,8 @@ public class SubscriptionRepository {
         return dsl.insertInto(Subscriptions.SUBSCRIPTIONS)
                 .set(Subscriptions.SUBSCRIPTIONS.NAME, name)
                 .set(Subscriptions.SUBSCRIPTIONS.PRICE, (float) price)
-                .set(Subscriptions.SUBSCRIPTIONS.BILLING_PERIOD, billingPeriod.getDisplayName())
+                .set(Subscriptions.SUBSCRIPTIONS.NORMALIZED_PRICE, (float) normalizePrice(price, billingPeriod))
+                .set(Subscriptions.SUBSCRIPTIONS.BILLING_PERIOD, billingPeriod.toString())
                 .set(Subscriptions.SUBSCRIPTIONS.START_DATE, startDate)
                 .execute() == 1;
     }
@@ -40,6 +44,7 @@ public class SubscriptionRepository {
      */
     public List<Subscription> getAllSubscriptions() {
         return dsl.selectFrom(Subscriptions.SUBSCRIPTIONS)
+                .orderBy(Subscriptions.SUBSCRIPTIONS.NORMALIZED_PRICE.desc())
                 .fetch(this::mapRecordToSubscription);
     }
 
@@ -74,7 +79,8 @@ public class SubscriptionRepository {
         return dsl.update(Subscriptions.SUBSCRIPTIONS)
                 .set(Subscriptions.SUBSCRIPTIONS.NAME, subscription.getName())
                 .set(Subscriptions.SUBSCRIPTIONS.PRICE, (float) subscription.getPrice())
-                .set(Subscriptions.SUBSCRIPTIONS.BILLING_PERIOD, subscription.getBillingPeriod().getDisplayName())
+                .set(Subscriptions.SUBSCRIPTIONS.NORMALIZED_PRICE, (float) subscription.getNormalizedPrice())
+                .set(Subscriptions.SUBSCRIPTIONS.BILLING_PERIOD, subscription.getBillingPeriod().toString())
                 .set(Subscriptions.SUBSCRIPTIONS.START_DATE, subscription.getStartDate())
                 .where(Subscriptions.SUBSCRIPTIONS.ID.eq(subscription.getId()))
                 .execute() == 1;

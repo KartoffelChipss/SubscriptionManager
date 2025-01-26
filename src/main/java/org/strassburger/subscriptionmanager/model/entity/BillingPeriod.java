@@ -21,9 +21,18 @@ public enum BillingPeriod {
         return displayName;
     }
 
+    public String getPriceString() {
+        return switch (this) {
+            case WEEKLY -> "/w";
+            case MONTHLY -> "/m";
+            case QUARTERLY -> "/q";
+            case YEARLY -> "/y";
+        };
+    }
+
     public static BillingPeriod fromDisplayName(String displayName) {
         for (BillingPeriod billingPeriod : values()) {
-            if (billingPeriod.getDisplayName().equals(displayName)) {
+            if (billingPeriod.toString().equals(displayName)) {
                 return billingPeriod;
             }
         }

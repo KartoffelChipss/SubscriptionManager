@@ -1,9 +1,12 @@
 package org.strassburger.subscriptionmanager.model.entity;
 
+import static org.strassburger.subscriptionmanager.util.PriceNormalizer.normalizePrice;
+
 public class Subscription {
     private final int id;
     private String name;
     private double price;
+    private double normalizedPrice;
     private BillingPeriod billingPeriod;
     private Long startDate;
 
@@ -11,6 +14,7 @@ public class Subscription {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.normalizedPrice = normalizePrice(price, billingPeriod);
         this.billingPeriod = billingPeriod;
         this.startDate = startDate;
     }
@@ -33,6 +37,7 @@ public class Subscription {
 
     public void setPrice(double price) {
         this.price = price;
+        this.normalizedPrice = normalizePrice(price, billingPeriod);
     }
 
     public BillingPeriod getBillingPeriod() {
@@ -41,6 +46,7 @@ public class Subscription {
 
     public void setBillingPeriod(BillingPeriod billingPeriod) {
         this.billingPeriod = billingPeriod;
+        this.normalizedPrice = normalizePrice(price, billingPeriod);
     }
 
     public Long getStartDate() {
@@ -49,6 +55,10 @@ public class Subscription {
 
     public void setStartDate(Long startDate) {
         this.startDate = startDate;
+    }
+
+    public double getNormalizedPrice() {
+        return normalizedPrice;
     }
 
     @Override
