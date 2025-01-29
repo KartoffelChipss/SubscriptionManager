@@ -2,6 +2,7 @@ package org.strassburger.subscriptionmanager.presenter;
 
 import org.strassburger.subscriptionmanager.model.DatabaseManager;
 import org.strassburger.subscriptionmanager.view.AddSubscriptionView;
+import org.strassburger.subscriptionmanager.view.DeleteSubscriptionView;
 import org.strassburger.subscriptionmanager.view.MainMenuView;
 import org.strassburger.subscriptionmanager.view.ViewAllSubscriptionsView;
 
@@ -24,6 +25,9 @@ public class MainMenuPresenter {
                 case MainMenuOption.VIEW_ALL_SUBSCRIPTIONS:
                     new ViewAllSubscriptionsPresenter(new ViewAllSubscriptionsView(), dbManager).start();
                     break;
+                case MainMenuOption.DELETE_SUBSCRIPTION:
+                    new DeleteSubscriptionPresenter(new DeleteSubscriptionView(), dbManager).start();
+                    break;
                 default:
                     view.showGoodbyeMessage();
                     System.exit(0);
@@ -35,6 +39,7 @@ public class MainMenuPresenter {
     public enum MainMenuOption {
         ADD_SUBSCRIPTION("Add Subscription"),
         VIEW_ALL_SUBSCRIPTIONS("View Subscriptions"),
+        DELETE_SUBSCRIPTION("Delete Subscription"),
         EXIT("Exit");
 
         private final String label;
