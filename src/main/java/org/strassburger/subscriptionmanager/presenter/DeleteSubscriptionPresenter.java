@@ -6,9 +6,6 @@ import org.strassburger.subscriptionmanager.view.DeleteSubscriptionView;
 import org.strassburger.tui4j.formatting.TextFormatter;
 import org.strassburger.tui4j.input.validationrules.ValidationRule;
 
-import javax.xml.crypto.Data;
-import java.util.Optional;
-
 public class DeleteSubscriptionPresenter {
     private final DeleteSubscriptionView view;
     private final DatabaseManager dbManager;
