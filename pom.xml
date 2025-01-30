@@ -24,7 +24,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.strassburger</groupId>
+            <groupId>com.github.KartoffelChipss</groupId>
             <artifactId>TUI4J</artifactId>
             <version>1.0.5</version>
         </dependency>
