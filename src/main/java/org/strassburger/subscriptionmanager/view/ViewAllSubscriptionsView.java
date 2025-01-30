@@ -16,7 +16,7 @@ public class ViewAllSubscriptionsView {
     }
 
     public void showAllSubscriptions(List<Subscription> subList) {
-        List<String> headers = List.of("Name", "Price", "Normalized Price", "Start date");
+        List<String> headers = List.of("Name", "Price", "Normalized Price", "Start date", "Next billing date");
         List<Integer> columnWidths = calculateColumnWidths(headers, subList);
 
         printHeader(headers, columnWidths);
@@ -24,18 +24,20 @@ public class ViewAllSubscriptionsView {
         printSeparator(columnWidths);
 
         String rowFormat = String.format(
-                " %%-%ds &8|&r %%-%ds &8|&r %%-%ds &8|&r %%-%ds",
-                columnWidths.get(0), columnWidths.get(1), columnWidths.get(2), columnWidths.get(3)
+                " %%-%ds &8|&r %%-%ds &8|&r %%-%ds &8|&r %%-%ds &8|&r %%-%ds",
+                columnWidths.get(0), columnWidths.get(1), columnWidths.get(2), columnWidths.get(3), columnWidths.get(4)
         );
 
         for (Subscription subscription : subList) {
             String startDateString = convertLongToDate(subscription.getStartDate());
+            String nextBillingDateString = convertLongToDate(getNextBillingDate(subscription));
             Printer.printfln(
                     rowFormat,
                     subscription.getName(),
                     String.format("%.2f", subscription.getPrice()) + subscription.getBillingPeriod().getPriceString(),
                     String.format("%.2f", subscription.getNormalizedPrice()) +BillingPeriod.MONTHLY.getPriceString(),
-                    startDateString
+                    startDateString,
+                    nextBillingDateString
             );
         }
 
@@ -58,6 +60,7 @@ public class ViewAllSubscriptionsView {
                     String.format("%.2f", subscription.getNormalizedPrice()) + BillingPeriod.MONTHLY.getPriceString()
             ).length()));
             columnWidths.set(3, Math.max(columnWidths.get(3), convertLongToDate(subscription.getStartDate()).length()));
+            columnWidths.set(4, 10);
         }
 
         return columnWidths;
@@ -65,10 +68,10 @@ public class ViewAllSubscriptionsView {
 
     private void printHeader(List<String> headers, List<Integer> columnWidths) {
         String headerFormat = String.format(
-                " &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds",
-                columnWidths.get(0), columnWidths.get(1), columnWidths.get(2), columnWidths.get(3)
+                " &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds",
+                columnWidths.get(0), columnWidths.get(1), columnWidths.get(2), columnWidths.get(3), columnWidths.get(4)
         );
-        Printer.printfln(headerFormat, headers.get(0), headers.get(1), headers.get(2), headers.get(3));
+        Printer.printfln(headerFormat, headers.get(0), headers.get(1), headers.get(2), headers.get(3), headers.get(4));
     }
 
     private void printSeparator(List<Integer> columnWidths) {
@@ -102,5 +105,53 @@ public class ViewAllSubscriptionsView {
         calendar.setTime(date);
 
         return calendar.get(Calendar.DAY_OF_MONTH) + "." + (calendar.get(Calendar.MONTH) + 1) + "." + calendar.get(Calendar.YEAR);
+    }
+
+    /**
+     * Calculate the next billing date for a subscription.
+     * @param subscription Subscription to calculate next billing date for.
+     * @return Next billing date in milliseconds.
+     */
+    private Long getNextBillingDate(Subscription subscription) {
+        if (subscription.getStartDate() == null) return null;
+
+        Date currentDate = new Date(System.currentTimeMillis());
+
+        Calendar nextBillingDateCalendar = Calendar.getInstance();
+        nextBillingDateCalendar.setTime(currentDate);
+        nextBillingDateCalendar.setLenient(true);
+
+        switch (subscription.getBillingPeriod()) {
+            case BillingPeriod.WEEKLY:
+                nextBillingDateCalendar.add(Calendar.WEEK_OF_YEAR, 1);
+                nextBillingDateCalendar.set(Calendar.DAY_OF_WEEK, 0);
+                break;
+            case BillingPeriod.MONTHLY:
+                nextBillingDateCalendar.add(Calendar.MONTH, 1);
+                nextBillingDateCalendar.set(Calendar.DAY_OF_MONTH, 1);
+                break;
+            case BillingPeriod.QUARTERLY:
+                int month = nextBillingDateCalendar.get(Calendar.MONTH);
+                if (month < 3) {
+                    nextBillingDateCalendar.set(Calendar.MONTH, 3);
+                } else if (month < 6) {
+                    nextBillingDateCalendar.set(Calendar.MONTH, 6);
+                } else if (month < 9) {
+                    nextBillingDateCalendar.set(Calendar.MONTH, 9);
+                } else {
+                    nextBillingDateCalendar.set(Calendar.MONTH, 0);
+                }
+
+                nextBillingDateCalendar.set(Calendar.DAY_OF_MONTH, 1);
+                break;
+                // BillingPeriod.YEARLY
+            default:
+                nextBillingDateCalendar.add(Calendar.YEAR, 1);
+                nextBillingDateCalendar.set(Calendar.MONTH, 0);
+                nextBillingDateCalendar.set(Calendar.DAY_OF_MONTH, 1);
+                break;
+        }
+
+        return nextBillingDateCalendar.getTimeInMillis();
     }
 }
