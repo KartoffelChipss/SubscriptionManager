@@ -10,7 +10,7 @@ public class DeleteSubscriptionView {
     public void sendStartMessage() {
         Printer.println("");
         Printer.println("&a&nDelete Subscription");
-        //Printer.println("&7Please enter the following information:");
+        Printer.println("&7Space to cancel");
         Printer.println("");
     }
 
@@ -30,6 +30,10 @@ public class DeleteSubscriptionView {
                         nameDoesNotExistValidationRule
                 )
                 .read();
+    }
+
+    public void sendCancelMessage() {
+        Printer.printfln("Deletion cancelled.");
     }
 
     public void sendSubscriptionDeleteSuccessMessage() {

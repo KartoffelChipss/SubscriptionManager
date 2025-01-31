@@ -19,6 +19,12 @@ public class DeleteSubscriptionPresenter {
         view.sendStartMessage();
 
         String name = view.readName(getNameDoesNotExistValidationRule(dbManager));
+
+        if (name.isBlank()) {
+            view.sendCancelMessage();
+            return;
+        }
+
         Subscription subscription = dbManager.getSubscriptionRepository().getSubscriptionByName(name).get();
         boolean deletionSuccess = dbManager.getSubscriptionRepository().deleteSubscription(subscription.getId());
 
@@ -39,6 +45,7 @@ public class DeleteSubscriptionPresenter {
         return new ValidationRule<String>() {
             @Override
             public boolean validate(String s) {
+                if (s.isBlank()) return true;
                 return dbManager.getSubscriptionRepository().getSubscriptionByName(s).isPresent();
             }
 
