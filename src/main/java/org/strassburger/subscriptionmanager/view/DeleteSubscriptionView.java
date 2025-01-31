@@ -36,6 +36,10 @@ public class DeleteSubscriptionView {
         Printer.println("&aSubscription deleted successfully.");
     }
 
+    public void sendSubscriptionDeleteFailMessage() {
+        Printer.println("&cFailed to delete Subscription.");
+    }
+
     public void enterToContinue() {
         new ContinueInput()
                 .setLabel("Press ENTER to continue")

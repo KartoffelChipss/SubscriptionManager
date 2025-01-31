@@ -15,15 +15,18 @@ public class DeleteSubscriptionPresenter {
         this.dbManager = dbManager;
     }
 
-
     public void start() {
         view.sendStartMessage();
 
         String name = view.readName(getNameDoesNotExistValidationRule(dbManager));
         Subscription subscription = dbManager.getSubscriptionRepository().getSubscriptionByName(name).get();
-        dbManager.getSubscriptionRepository().deleteSubscription(subscription.getId());
+        boolean deletionSuccess = dbManager.getSubscriptionRepository().deleteSubscription(subscription.getId());
 
-        view.sendSubscriptionDeleteSuccessMessage();
+        if (deletionSuccess) {
+            view.sendSubscriptionDeleteSuccessMessage();
+        } else {
+            view.sendSubscriptionDeleteFailMessage();
+        }
         view.enterToContinue();
     }
 
