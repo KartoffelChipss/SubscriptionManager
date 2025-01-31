@@ -50,7 +50,7 @@ public class DateCalculator {
                 nextBillingDateCalendar.set(Calendar.DAY_OF_MONTH, 1);
                 break;
         }
-        
+
         return nextBillingDateCalendar.getTimeInMillis();
     }
 

@@ -21,4 +21,28 @@ public class DateCalculatorTest {
 
         assertEquals("1.1.2026", nextDate);
     }
+
+    @Test
+    public void testNextBillingDate_Quarterly() {
+        long nextDateMillis = DateCalculator.getNextBillingDate(BillingPeriod.QUARTERLY, 1738345845928L);
+        String nextDate = DateCalculator.convertLongToDate(nextDateMillis);
+
+        assertEquals("1.4.2025", nextDate);
+    }
+
+    @Test
+    public void testNextBillingDate_Monthly() {
+        long nextDateMillis = DateCalculator.getNextBillingDate(BillingPeriod.MONTHLY, 1738345845928L);
+        String nextDate = DateCalculator.convertLongToDate(nextDateMillis);
+
+        assertEquals("1.2.2025", nextDate);
+    }
+
+    @Test
+    public void testNextBillingDate_Weekly() {
+        long nextDateMillis = DateCalculator.getNextBillingDate(BillingPeriod.MONTHLY, 1738345845928L);
+        String nextDate = DateCalculator.convertLongToDate(nextDateMillis);
+
+        assertEquals("1.2.2025", nextDate);
+    }
 }
