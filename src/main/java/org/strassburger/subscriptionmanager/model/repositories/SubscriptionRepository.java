@@ -6,7 +6,9 @@ import org.jooq.impl.QOM;
 import org.strassburger.subscriptionmanager.jooq.tables.Subscriptions;
 import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
 import org.strassburger.subscriptionmanager.model.entity.Subscription;
+import org.strassburger.subscriptionmanager.model.entity.SubscriptionOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

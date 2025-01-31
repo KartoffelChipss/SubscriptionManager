@@ -2,9 +2,11 @@ package org.strassburger.subscriptionmanager.view;
 
 import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
 import org.strassburger.subscriptionmanager.model.entity.Subscription;
+import org.strassburger.subscriptionmanager.model.entity.SubscriptionOrder;
 import org.strassburger.subscriptionmanager.util.DateCalculator;
 import org.strassburger.tui4j.formatting.Printer;
 import org.strassburger.tui4j.input.ContinueInput;
+import org.strassburger.tui4j.input.SelectInput;
 
 import java.util.*;
 
@@ -14,6 +16,18 @@ public class ViewAllSubscriptionsView {
         Printer.println("");
         Printer.println("&a&nSubscriptions:");
         Printer.println("");
+    }
+
+    public SubscriptionOrder getSubscriptionOrder() {
+        return new SelectInput<SubscriptionOrder>()
+                .addOptions(
+                        Arrays.stream(SubscriptionOrder.values())
+                                .map(so -> new SelectInput.Option<SubscriptionOrder>(so.getDisplayName(), so))
+                                .toList()
+                )
+                .setLabel("Order subscriptions by")
+                .setRetryOnInvalid(true)
+                .read();
     }
 
     public void showAllSubscriptions(List<Subscription> subList) {
