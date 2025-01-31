@@ -38,7 +38,18 @@ public class AddSubscriptionView {
                 .addValidationRules(
                         TextValidationRules.minLength(1),
                         TextValidationRules.maxLength(255),
-                        nameAlreadyExistsValidationRule
+                        nameAlreadyExistsValidationRule,
+                        new ValidationRule<String>() {
+                            @Override
+                            public boolean validate(String s) {
+                                return !s.isBlank();
+                            }
+
+                            @Override
+                            public String getErrorMessage() {
+                                return "&cName must not be empty";
+                            }
+                        }
                 )
                 .read();
     }
