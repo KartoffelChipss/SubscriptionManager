@@ -2,6 +2,7 @@ package org.strassburger.subscriptionmanager.view;
 
 import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
 import org.strassburger.subscriptionmanager.model.entity.Subscription;
+import org.strassburger.subscriptionmanager.util.DateCalculator;
 import org.strassburger.tui4j.formatting.Printer;
 import org.strassburger.tui4j.input.ContinueInput;
 
@@ -29,8 +30,8 @@ public class ViewAllSubscriptionsView {
         );
 
         for (Subscription subscription : subList) {
-            String startDateString = convertLongToDate(subscription.getStartDate());
-            String nextBillingDateString = convertLongToDate(getNextBillingDate(subscription));
+            String startDateString = DateCalculator.convertLongToDate(subscription.getStartDate());
+            String nextBillingDateString = DateCalculator.convertLongToDate(DateCalculator.getNextBillingDate(subscription.getBillingPeriod(), System.currentTimeMillis()));
             Printer.printfln(
                     rowFormat,
                     subscription.getName(),
@@ -59,7 +60,7 @@ public class ViewAllSubscriptionsView {
             columnWidths.set(2, Math.max(columnWidths.get(2), (
                     String.format("%.2f", subscription.getNormalizedPrice()) + BillingPeriod.MONTHLY.getPriceString()
             ).length()));
-            columnWidths.set(3, Math.max(columnWidths.get(3), convertLongToDate(subscription.getStartDate()).length()));
+            columnWidths.set(3, Math.max(columnWidths.get(3), DateCalculator.convertLongToDate(subscription.getStartDate()).length()));
             columnWidths.set(4, 10);
         }
 
@@ -89,69 +90,5 @@ public class ViewAllSubscriptionsView {
         new ContinueInput()
                 .setLabel("Press ENTER to continue")
                 .read();
-    }
-
-    /**
-     * Convert time in milliseconds to String representation of date.
-     * @param dateLong Time in milliseconds.
-     * @return Date as String.
-     */
-    private String convertLongToDate(Long dateLong) {
-        if (dateLong == null) return "/";
-
-        Date date = new Date(dateLong);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        return calendar.get(Calendar.DAY_OF_MONTH) + "." + (calendar.get(Calendar.MONTH) + 1) + "." + calendar.get(Calendar.YEAR);
-    }
-
-    /**
-     * Calculate the next billing date for a subscription.
-     * @param subscription Subscription to calculate next billing date for.
-     * @return Next billing date in milliseconds.
-     */
-    private Long getNextBillingDate(Subscription subscription) {
-        if (subscription.getStartDate() == null) return null;
-
-        Date currentDate = new Date(System.currentTimeMillis());
-
-        Calendar nextBillingDateCalendar = Calendar.getInstance();
-        nextBillingDateCalendar.setTime(currentDate);
-        nextBillingDateCalendar.setLenient(true);
-
-        switch (subscription.getBillingPeriod()) {
-            case BillingPeriod.WEEKLY:
-                nextBillingDateCalendar.add(Calendar.WEEK_OF_YEAR, 1);
-                nextBillingDateCalendar.set(Calendar.DAY_OF_WEEK, 0);
-                break;
-            case BillingPeriod.MONTHLY:
-                nextBillingDateCalendar.add(Calendar.MONTH, 1);
-                nextBillingDateCalendar.set(Calendar.DAY_OF_MONTH, 1);
-                break;
-            case BillingPeriod.QUARTERLY:
-                int month = nextBillingDateCalendar.get(Calendar.MONTH);
-                if (month < 3) {
-                    nextBillingDateCalendar.set(Calendar.MONTH, 3);
-                } else if (month < 6) {
-                    nextBillingDateCalendar.set(Calendar.MONTH, 6);
-                } else if (month < 9) {
-                    nextBillingDateCalendar.set(Calendar.MONTH, 9);
-                } else {
-                    nextBillingDateCalendar.set(Calendar.MONTH, 0);
-                }
-
-                nextBillingDateCalendar.set(Calendar.DAY_OF_MONTH, 1);
-                break;
-                // BillingPeriod.YEARLY
-            default:
-                nextBillingDateCalendar.add(Calendar.YEAR, 1);
-                nextBillingDateCalendar.set(Calendar.MONTH, 0);
-                nextBillingDateCalendar.set(Calendar.DAY_OF_MONTH, 1);
-                break;
-        }
-
-        return nextBillingDateCalendar.getTimeInMillis();
     }
 }
