@@ -10,54 +10,29 @@ public class DateCalculator {
     /**
      * Calculate the next billing date for a subscription.
      * @param billingPeriod Billing period of Subscription to calculate next billing date for.
+     * @param startDateMillis Start date of Subscription to calculate next billing date for in milliseconds.
      * @return Next billing date in milliseconds.
      */
-    public static Long getNextBillingDate(BillingPeriod billingPeriod) {
-        return getNextBillingDate(billingPeriod, System.currentTimeMillis());
-    }
-
-    /**
-     * Calculate the next billing date for a subscription.
-     * @param billingPeriod Billing period of Subscription to calculate next billing date for.
-     * @param currentDateMillis Current Date in milliseconds.
-     * @return Next billing date in milliseconds.
-     */
-    public static Long getNextBillingDate(BillingPeriod billingPeriod, Long currentDateMillis) {
-        Date currentDate = new Date(currentDateMillis);
-
+    public static Long getNextBillingDate(BillingPeriod billingPeriod, Long startDateMillis) {
         Calendar nextBillingDateCalendar = Calendar.getInstance();
-        nextBillingDateCalendar.setTime(currentDate);
+        nextBillingDateCalendar.setTimeInMillis(startDateMillis);
         nextBillingDateCalendar.setLenient(true);
 
         switch (billingPeriod) {
-            case BillingPeriod.WEEKLY:
+            case WEEKLY:
                 nextBillingDateCalendar.add(Calendar.WEEK_OF_YEAR, 1);
-                nextBillingDateCalendar.set(Calendar.DAY_OF_WEEK, 0);
                 break;
-            case BillingPeriod.MONTHLY:
+            case MONTHLY:
                 nextBillingDateCalendar.add(Calendar.MONTH, 1);
-                nextBillingDateCalendar.set(Calendar.DAY_OF_MONTH, 1);
                 break;
-            case BillingPeriod.QUARTERLY:
-                int month = nextBillingDateCalendar.get(Calendar.MONTH);
-                if (month < 3) {
-                    nextBillingDateCalendar.set(Calendar.MONTH, 3);
-                } else if (month < 6) {
-                    nextBillingDateCalendar.set(Calendar.MONTH, 6);
-                } else if (month < 9) {
-                    nextBillingDateCalendar.set(Calendar.MONTH, 9);
-                } else {
-                    nextBillingDateCalendar.set(Calendar.MONTH, 0);
-                }
-
-                nextBillingDateCalendar.set(Calendar.DAY_OF_MONTH, 1);
+            case QUARTERLY:
+                nextBillingDateCalendar.add(Calendar.MONTH, 3);
                 break;
-            // BillingPeriod.YEARLY
-            default:
+            case YEARLY:
                 nextBillingDateCalendar.add(Calendar.YEAR, 1);
-                nextBillingDateCalendar.set(Calendar.MONTH, 0);
-                nextBillingDateCalendar.set(Calendar.DAY_OF_MONTH, 1);
                 break;
+            default:
+                throw new IllegalArgumentException("Unsupported billing period: " + billingPeriod);
         }
 
         return nextBillingDateCalendar.getTimeInMillis();

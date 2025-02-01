@@ -3,46 +3,50 @@ package org.strassburger.subscriptionmanager.util;
 import org.junit.jupiter.api.Test;
 import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DateCalculatorTest {
 
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d.M.yyyy", Locale.GERMANY);
+
     @Test
     public void testConvertLongToDate() {
         String date = DateCalculator.convertLongToDate(1738345845928L);
-
-        assertEquals(date, "31.1.2025");
+        assertEquals("31.1.2025", date);
     }
 
     @Test
     public void testNextBillingDate_Yearly() {
-        long nextDateMillis = DateCalculator.getNextBillingDate(BillingPeriod.YEARLY, 1738345845928L);
-        String nextDate = DateCalculator.convertLongToDate(nextDateMillis);
-
-        assertEquals("1.1.2026", nextDate);
+        assertNextBillingDate(BillingPeriod.YEARLY, 1738345845928L, Calendar.YEAR, 1);
     }
 
     @Test
     public void testNextBillingDate_Quarterly() {
-        long nextDateMillis = DateCalculator.getNextBillingDate(BillingPeriod.QUARTERLY, 1738345845928L);
-        String nextDate = DateCalculator.convertLongToDate(nextDateMillis);
-
-        assertEquals("1.4.2025", nextDate);
+        assertNextBillingDate(BillingPeriod.QUARTERLY, 1738345845928L, Calendar.MONTH, 3);
     }
 
     @Test
     public void testNextBillingDate_Monthly() {
-        long nextDateMillis = DateCalculator.getNextBillingDate(BillingPeriod.MONTHLY, 1738345845928L);
-        String nextDate = DateCalculator.convertLongToDate(nextDateMillis);
-
-        assertEquals("1.2.2025", nextDate);
+        assertNextBillingDate(BillingPeriod.MONTHLY, 1738345845928L, Calendar.MONTH, 1);
     }
 
     @Test
     public void testNextBillingDate_Weekly() {
-        long nextDateMillis = DateCalculator.getNextBillingDate(BillingPeriod.MONTHLY, 1738345845928L);
-        String nextDate = DateCalculator.convertLongToDate(nextDateMillis);
+        assertNextBillingDate(BillingPeriod.WEEKLY, 1738345845928L, Calendar.WEEK_OF_YEAR, 1);
+    }
 
-        assertEquals("1.2.2025", nextDate);
+    private void assertNextBillingDate(BillingPeriod billingPeriod, long startMillis, int calendarField, int amount) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(startMillis);
+        calendar.add(calendarField, amount);
+
+        long expectedMillis = calendar.getTimeInMillis();
+        long actualMillis = DateCalculator.getNextBillingDate(billingPeriod, startMillis);
+
+        assertEquals(DATE_FORMAT.format(expectedMillis), DateCalculator.convertLongToDate(actualMillis));
     }
 }

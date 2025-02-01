@@ -55,8 +55,11 @@ public class ViewAllSubscriptionsView {
         for (Subscription subscription : subList) {
             String startDateString = DateCalculator.convertLongToDate(subscription.getStartDate());
 
-            Long nextBillingDate = DateCalculator.getNextBillingDate(subscription.getBillingPeriod());
-            String nextBillingDateString = DateCalculator.convertLongToDate(nextBillingDate);
+            String nextBillingDateString = subscription.getStartDate() != null
+                    ? DateCalculator.convertLongToDate(
+                        DateCalculator.getNextBillingDate(subscription.getBillingPeriod(), subscription.getStartDate())
+                    )
+                    : "/";
 
             Printer.printfln(
                     rowFormat,
