@@ -17,6 +17,7 @@ public class MainMenuPresenter {
 
     public void start() {
         while (true) {
+            view.showMainMenuMessage();
             MainMenuOption choice = view.getMainMenuSelection();
             switch (choice) {
                 case MainMenuOption.ADD_SUBSCRIPTION:

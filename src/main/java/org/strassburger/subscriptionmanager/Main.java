@@ -2,8 +2,8 @@ package org.strassburger.subscriptionmanager;
 
 import org.strassburger.subscriptionmanager.model.DatabaseManager;
 import org.strassburger.subscriptionmanager.model.SQLiteDatabaseManager;
-import org.strassburger.subscriptionmanager.presenter.MainMenuPresenter;
-import org.strassburger.subscriptionmanager.view.MainMenuView;
+import org.strassburger.subscriptionmanager.presenter.WelcomeWindowPresenter;
+import org.strassburger.subscriptionmanager.view.WelcomeWindowView;
 
 import java.util.logging.LogManager;
 
@@ -18,8 +18,7 @@ public class Main {
 
     public static void main(String[] args) {
         DatabaseManager dbManager = new SQLiteDatabaseManager();
-        MainMenuView view = new MainMenuView();
-        MainMenuPresenter presenter = new MainMenuPresenter(view, dbManager);
+        WelcomeWindowPresenter presenter = new WelcomeWindowPresenter(new WelcomeWindowView(), dbManager);
 
         presenter.start();
     }
