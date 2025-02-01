@@ -10,7 +10,7 @@ public class DeleteSubscriptionView {
     public void sendStartMessage() {
         Printer.println("");
         Printer.println("&a&nDelete Subscription");
-        Printer.println("&7Space to cancel");
+        Printer.println("&7Enter the name of the subscription you want to delete. (Or space to cancel)");
         Printer.println("");
     }
 
@@ -33,11 +33,11 @@ public class DeleteSubscriptionView {
     }
 
     public void sendCancelMessage() {
-        Printer.printfln("Deletion cancelled.");
+        Printer.printfln("&eDeletion cancelled.\n");
     }
 
     public void sendSubscriptionDeleteSuccessMessage() {
-        Printer.println("&aSubscription deleted successfully.");
+        Printer.println("&aSubscription deleted successfully.\n");
     }
 
     public void sendSubscriptionDeleteFailMessage() {

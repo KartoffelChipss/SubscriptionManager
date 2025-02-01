@@ -15,14 +15,19 @@ public class ViewAllSubscriptionsView {
     public void sendStartMessage() {
         Printer.println("");
         Printer.println("&a&nSubscriptions:");
+        Printer.println("&7Please first choose, how you want to order the subscriptions.");
         Printer.println("");
     }
 
+    /**
+     * Reads the order in which the subscriptions should be displayed from the UI.
+     * @return The order in which the subscriptions should be displayed.
+     */
     public SubscriptionOrder getSubscriptionOrder() {
         return new SelectInput<SubscriptionOrder>()
                 .addOptions(
                         Arrays.stream(SubscriptionOrder.values())
-                                .map(so -> new SelectInput.Option<SubscriptionOrder>(so.getDisplayName(), so))
+                                .map(so -> new SelectInput.Option<>(so.getDisplayName(), so))
                                 .toList()
                 )
                 .setLabel("Order subscriptions by")
@@ -30,6 +35,10 @@ public class ViewAllSubscriptionsView {
                 .read();
     }
 
+    /**
+     * Shows all subscriptions in the UI.
+     * @param subList List of subscriptions to show.
+     */
     public void showAllSubscriptions(List<Subscription> subList) {
         List<String> headers = List.of("Name", "Price", "Normalized Price", "Start date", "Next billing date");
         List<Integer> columnWidths = calculateColumnWidths(headers, subList);
@@ -45,7 +54,10 @@ public class ViewAllSubscriptionsView {
 
         for (Subscription subscription : subList) {
             String startDateString = DateCalculator.convertLongToDate(subscription.getStartDate());
-            String nextBillingDateString = DateCalculator.convertLongToDate(DateCalculator.getNextBillingDate(subscription.getBillingPeriod(), System.currentTimeMillis()));
+
+            Long nextBillingDate = DateCalculator.getNextBillingDate(subscription.getBillingPeriod());
+            String nextBillingDateString = DateCalculator.convertLongToDate(nextBillingDate);
+
             Printer.printfln(
                     rowFormat,
                     subscription.getName(),
@@ -96,7 +108,7 @@ public class ViewAllSubscriptionsView {
     }
 
     public void sendNoSubscriptionsAvailableMessage() {
-        Printer.println(" &cNo Subscriptions available");
+        Printer.println("&cNo Subscriptions available\n");
         Printer.println("");
     }
 

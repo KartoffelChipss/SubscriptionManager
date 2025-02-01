@@ -20,12 +20,4 @@ public enum SubscriptionOrder {
         return displayName;
     }
 
-    public String getPriceString() {
-        return switch (this) {
-            case NORMALIZED_PRICE -> "/w";
-            case NEXT_BILLING_DATE -> "/m";
-            case NAME -> "/q";
-        };
-    }
-
 }

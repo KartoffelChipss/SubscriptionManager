@@ -10,6 +10,15 @@ public class DateCalculator {
     /**
      * Calculate the next billing date for a subscription.
      * @param billingPeriod Billing period of Subscription to calculate next billing date for.
+     * @return Next billing date in milliseconds.
+     */
+    public static Long getNextBillingDate(BillingPeriod billingPeriod) {
+        return getNextBillingDate(billingPeriod, System.currentTimeMillis());
+    }
+
+    /**
+     * Calculate the next billing date for a subscription.
+     * @param billingPeriod Billing period of Subscription to calculate next billing date for.
      * @param currentDateMillis Current Date in milliseconds.
      * @return Next billing date in milliseconds.
      */
