@@ -28,15 +28,17 @@ public class SubscriptionRepository {
      * @param price The price of the subscription per billing period.
      * @param billingPeriod The billing period of the subscription.
      * @param startDate The start date of the subscription in milliseconds since epoch (nullable).
+     * @param category The category of the subscription.
      * @return True if the subscription was added successfully, false otherwise.
      */
-    public boolean addSubscription(String name, double price, BillingPeriod billingPeriod, Long startDate) {
+    public boolean addSubscription(String name, double price, BillingPeriod billingPeriod, Long startDate,String category) {
         return dsl.insertInto(Subscriptions.SUBSCRIPTIONS)
                 .set(Subscriptions.SUBSCRIPTIONS.NAME, name)
                 .set(Subscriptions.SUBSCRIPTIONS.PRICE, (float) price)
                 .set(Subscriptions.SUBSCRIPTIONS.NORMALIZED_PRICE, (float) normalizePrice(price, billingPeriod))
                 .set(Subscriptions.SUBSCRIPTIONS.BILLING_PERIOD, billingPeriod.toString())
                 .set(Subscriptions.SUBSCRIPTIONS.START_DATE, startDate)
+                .set(Subscriptions.SUBSCRIPTIONS.CATEGORY, category)
                 .execute() == 1;
     }
 
@@ -84,6 +86,7 @@ public class SubscriptionRepository {
                 .set(Subscriptions.SUBSCRIPTIONS.NORMALIZED_PRICE, (float) subscription.getNormalizedPrice())
                 .set(Subscriptions.SUBSCRIPTIONS.BILLING_PERIOD, subscription.getBillingPeriod().toString())
                 .set(Subscriptions.SUBSCRIPTIONS.START_DATE, subscription.getStartDate())
+                .set(Subscriptions.SUBSCRIPTIONS.CATEGORY, subscription.getCategory())
                 .where(Subscriptions.SUBSCRIPTIONS.ID.eq(subscription.getId()))
                 .execute() == 1;
     }
@@ -110,7 +113,10 @@ public class SubscriptionRepository {
                 record.get(Subscriptions.SUBSCRIPTIONS.NAME),
                 record.get(Subscriptions.SUBSCRIPTIONS.PRICE),
                 BillingPeriod.fromDisplayName(record.get(Subscriptions.SUBSCRIPTIONS.BILLING_PERIOD)),
-                record.get(Subscriptions.SUBSCRIPTIONS.START_DATE)
+                record.get(Subscriptions.SUBSCRIPTIONS.START_DATE),
+                record.get(Subscriptions.SUBSCRIPTIONS.CATEGORY)
         );
     }
+
+
 }

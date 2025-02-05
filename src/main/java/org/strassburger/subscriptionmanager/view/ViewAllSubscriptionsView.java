@@ -40,7 +40,7 @@ public class ViewAllSubscriptionsView {
      * @param subList List of subscriptions to show.
      */
     public void showAllSubscriptions(List<Subscription> subList) {
-        List<String> headers = List.of("Name", "Price", "Normalized Price", "Start date", "Next billing date");
+        List<String> headers = List.of("Name", "Price", "Normalized Price", "Start date", "Next billing date", "Category");
         List<Integer> columnWidths = calculateColumnWidths(headers, subList);
 
         printHeader(headers, columnWidths);
@@ -48,8 +48,8 @@ public class ViewAllSubscriptionsView {
         printSeparator(columnWidths);
 
         String rowFormat = String.format(
-                " %%-%ds &8|&r %%-%ds &8|&r %%-%ds &8|&r %%-%ds &8|&r %%-%ds",
-                columnWidths.get(0), columnWidths.get(1), columnWidths.get(2), columnWidths.get(3), columnWidths.get(4)
+                " %%-%ds &8|&r %%-%ds &8|&r %%-%ds &8|&r %%-%ds &8|&r %%-%ds &8|&r %%-%ds",
+                columnWidths.get(0), columnWidths.get(1), columnWidths.get(2), columnWidths.get(3), columnWidths.get(4), columnWidths.get(5)
         );
 
         for (Subscription subscription : subList) {
@@ -67,7 +67,8 @@ public class ViewAllSubscriptionsView {
                     String.format("%.2f", subscription.getPrice()) + subscription.getBillingPeriod().getPriceString(),
                     String.format("%.2f", subscription.getNormalizedPrice()) +BillingPeriod.MONTHLY.getPriceString(),
                     startDateString,
-                    nextBillingDateString
+                    nextBillingDateString,
+                    subscription.getCategory()
             );
         }
 
@@ -90,7 +91,7 @@ public class ViewAllSubscriptionsView {
                     String.format("%.2f", subscription.getNormalizedPrice()) + BillingPeriod.MONTHLY.getPriceString()
             ).length()));
             columnWidths.set(3, Math.max(columnWidths.get(3), DateCalculator.convertLongToDate(subscription.getStartDate()).length()));
-            columnWidths.set(4, 10);
+            columnWidths.set(4, 16);
         }
 
         return columnWidths;
@@ -98,10 +99,10 @@ public class ViewAllSubscriptionsView {
 
     private void printHeader(List<String> headers, List<Integer> columnWidths) {
         String headerFormat = String.format(
-                " &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds",
-                columnWidths.get(0), columnWidths.get(1), columnWidths.get(2), columnWidths.get(3), columnWidths.get(4)
+                " &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds",
+                columnWidths.get(0), columnWidths.get(1), columnWidths.get(2), columnWidths.get(3), columnWidths.get(4), columnWidths.get(5)
         );
-        Printer.printfln(headerFormat, headers.get(0), headers.get(1), headers.get(2), headers.get(3), headers.get(4));
+        Printer.printfln(headerFormat, headers.get(0), headers.get(1), headers.get(2), headers.get(3), headers.get(4), headers.get(5));
     }
 
     private void printSeparator(List<Integer> columnWidths) {

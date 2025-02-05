@@ -9,14 +9,16 @@ public class Subscription {
     private double normalizedPrice;
     private BillingPeriod billingPeriod;
     private Long startDate;
+    private String category;
 
-    public Subscription(int id, String name, double price, BillingPeriod billingPeriod, Long startDate) {
+    public Subscription(int id, String name, double price, BillingPeriod billingPeriod, Long startDate, String category) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.normalizedPrice = normalizePrice(price, billingPeriod);
         this.billingPeriod = billingPeriod;
         this.startDate = startDate;
+        this.category = category;
     }
 
     public int getId() {
@@ -60,6 +62,12 @@ public class Subscription {
     public double getNormalizedPrice() {
         return normalizedPrice;
     }
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) { this.category = category; }
+
 
     @Override
     public String toString() {
@@ -69,6 +77,7 @@ public class Subscription {
                 ", price=" + getPrice() +
                 ", billingPeriod=" + getBillingPeriod() +
                 ", startDate=" + getStartDate() +
+                ", category=" + getCategory() +
                 '}';
     }
 }
