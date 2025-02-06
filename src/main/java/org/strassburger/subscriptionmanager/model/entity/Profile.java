@@ -4,20 +4,17 @@ public class Profile {
     private final int id;
     private final String name;
     private String pin;
-    private boolean requiresPin;
 
-    public Profile(int id, String name, String pin, boolean requiresPin) {
+    public Profile(int id, String name, String pin) {
         this.id = id;
         this.name = name;
         this.pin = pin;
-        this.requiresPin = requiresPin;
     }
 
     public Profile(int id, String name) {
         this.id = id;
         this.name = name;
         this.pin = null;
-        this.requiresPin = false;
     }
 
     public int getId() {
@@ -32,16 +29,12 @@ public class Profile {
         return pin;
     }
 
-    public boolean requiresPin() {
-        return requiresPin;
-    }
-
     public void setPin(String pin) {
         this.pin = pin;
     }
 
-    public void setRequiresPin(boolean requiresPin) {
-        this.requiresPin = requiresPin;
+    public boolean requiresPin() {
+        return pin != null;
     }
 
     @Override
@@ -50,7 +43,6 @@ public class Profile {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", pin='" + pin + '\'' +
-                ", requiresPin=" + requiresPin +
                 '}';
     }
 }

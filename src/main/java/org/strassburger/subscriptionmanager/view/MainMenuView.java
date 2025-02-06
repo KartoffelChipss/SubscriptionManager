@@ -27,8 +27,4 @@ public class MainMenuView {
                 .read();
     }
 
-    public void showGoodbyeMessage() {
-        Printer.println("&aGoodbye!");
-    }
-
 }

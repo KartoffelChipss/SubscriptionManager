@@ -1,9 +1,10 @@
 package org.strassburger.subscriptionmanager.model.repositories;
 
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.strassburger.subscriptionmanager.jooq.tables.Profiles;
 import org.strassburger.subscriptionmanager.model.entity.Profile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileRepository {
@@ -17,15 +18,10 @@ public class ProfileRepository {
      * Get a list of all profiles.
      * @return A list of all profiles.
      */
-    List<Profile> getProfiles() {
-        // TODO: This is not a real implementation, but a placeholder
-        return new ArrayList<>(
-                List.of(
-                        new Profile(0, "Alice"),
-                        new Profile(1, "Bob"),
-                        new Profile(2, "Charlie")
-                )
-        );
+    public List<Profile> getProfiles() {
+        return dsl.selectFrom(Profiles.PROFILES)
+                .orderBy(Profiles.PROFILES.CREATED_AT.asc())
+                .fetch(this::mapRecordToProfile);
     }
 
     /**
@@ -33,17 +29,10 @@ public class ProfileRepository {
      * @param username The username of the profile.
      * @return The profile with the given username or null if no profile with the given username exists.
      */
-    Profile getProfile(String username) {
-        // TODO: This is not a real implementation, but a placeholder too
-        if (username.equals("Alice")) {
-            return new Profile(0, "Alice");
-        } else if (username.equals("Bob")) {
-            return new Profile(1, "Bob");
-        } else if (username.equals("Charlie")) {
-            return new Profile(2, "Charlie");
-        } else {
-            return null;
-        }
+    public Profile getProfile(String username) {
+        return dsl.selectFrom(Profiles.PROFILES)
+                .where(Profiles.PROFILES.NAME.eq(username))
+                .fetchOne(this::mapRecordToProfile);
     }
 
     /**
@@ -51,16 +40,45 @@ public class ProfileRepository {
      * @param id The id of the profile.
      * @return The profile with the given id or null if no profile with the given id exists.
      */
-    Profile getProfile(int id) {
-        // TODO: This is not a real implementation, but a placeholder too
-        if (id == 0) {
-            return new Profile(0, "Alice");
-        } else if (id == 1) {
-            return new Profile(1, "Bob");
-        } else if (id == 2) {
-            return new Profile(2, "Charlie");
-        } else {
-            return null;
-        }
+    public Profile getProfile(int id) {
+        return dsl.selectFrom(Profiles.PROFILES)
+                .where(Profiles.PROFILES.ID.eq(id))
+                .fetchOne(this::mapRecordToProfile);
+    }
+
+    /**
+     * Create a new profile.
+     * @param username The username of the profile.
+     * @return True if the profile was created successfully, false otherwise.
+     */
+    public boolean createProfile(String username) {
+        return dsl.insertInto(Profiles.PROFILES)
+                .set(Profiles.PROFILES.NAME, username)
+                .execute() == 1;
+    }
+
+    /**
+     * Create a new profile.
+     * @param username The username of the profile.
+     * @param pin The pin of the profile.
+     * @return True if the profile was created successfully, false otherwise.
+     */
+    public boolean createProfile(String username, String pin) {
+        return dsl.insertInto(Profiles.PROFILES)
+                .set(Profiles.PROFILES.NAME, username)
+                .set(Profiles.PROFILES.PIN, pin)
+                .execute() == 1;
+    }
+
+    /**
+     * Map a database record to a profile.
+     * @param record The database record.
+     * @return The profile.
+     */
+    private Profile mapRecordToProfile(Record record) {
+        return new Profile(
+                record.get(Profiles.PROFILES.ID),
+                record.get(Profiles.PROFILES.NAME)
+        );
     }
 }

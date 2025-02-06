@@ -1,6 +1,5 @@
 package org.strassburger.subscriptionmanager.view;
 
-import org.strassburger.subscriptionmanager.model.DatabaseManager;
 import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
 import org.strassburger.tui4j.formatting.Printer;
 import org.strassburger.tui4j.formatting.TextFormatter;
@@ -16,7 +15,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 public class AddSubscriptionView {

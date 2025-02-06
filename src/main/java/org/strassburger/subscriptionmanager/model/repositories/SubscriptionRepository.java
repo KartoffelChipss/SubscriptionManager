@@ -2,13 +2,10 @@ package org.strassburger.subscriptionmanager.model.repositories;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.jooq.impl.QOM;
 import org.strassburger.subscriptionmanager.jooq.tables.Subscriptions;
 import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
 import org.strassburger.subscriptionmanager.model.entity.Subscription;
-import org.strassburger.subscriptionmanager.model.entity.SubscriptionOrder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +21,7 @@ public class SubscriptionRepository {
     /**
      * Add a new subscription to the database.
      *
+     * @param profileId The ID of the profile to add the subscription to.
      * @param name The name of the subscription.
      * @param price The price of the subscription per billing period.
      * @param billingPeriod The billing period of the subscription.
@@ -31,8 +29,9 @@ public class SubscriptionRepository {
      * @param category The category of the subscription.
      * @return True if the subscription was added successfully, false otherwise.
      */
-    public boolean addSubscription(String name, double price, BillingPeriod billingPeriod, Long startDate,String category) {
+    public boolean addSubscription(int profileId, String name, double price, BillingPeriod billingPeriod, Long startDate, String category) {
         return dsl.insertInto(Subscriptions.SUBSCRIPTIONS)
+                .set(Subscriptions.SUBSCRIPTIONS.PROFILE_ID, profileId)
                 .set(Subscriptions.SUBSCRIPTIONS.NAME, name)
                 .set(Subscriptions.SUBSCRIPTIONS.PRICE, (float) price)
                 .set(Subscriptions.SUBSCRIPTIONS.NORMALIZED_PRICE, (float) normalizePrice(price, billingPeriod))
@@ -44,10 +43,12 @@ public class SubscriptionRepository {
 
     /**
      * Get all subscriptions from the database.
+     * @param profileId The ID of the profile to get the subscriptions from.
      * @return A list of all subscriptions.
      */
-    public List<Subscription> getAllSubscriptions() {
+    public List<Subscription> getAllSubscriptions(int profileId) {
         return dsl.selectFrom(Subscriptions.SUBSCRIPTIONS)
+                .where(Subscriptions.SUBSCRIPTIONS.PROFILE_ID.eq(profileId))
                 .orderBy(Subscriptions.SUBSCRIPTIONS.NORMALIZED_PRICE.desc())
                 .fetch(this::mapRecordToSubscription);
     }
@@ -65,12 +66,14 @@ public class SubscriptionRepository {
 
     /**
      * Get a subscription by its name.
+     * @param profileId The ID of the profile to get the subscription from.
      * @param name The name of the subscription.
      * @return An optional containing the subscription if it exists, empty otherwise.
      */
-    public Optional<Subscription> getSubscriptionByName(String name) {
+    public Optional<Subscription> getSubscriptionByName(int profileId, String name) {
         return dsl.selectFrom(Subscriptions.SUBSCRIPTIONS)
-                .where(Subscriptions.SUBSCRIPTIONS.NAME.eq(name))
+                .where(Subscriptions.SUBSCRIPTIONS.PROFILE_ID.eq(profileId))
+                .and(Subscriptions.SUBSCRIPTIONS.NAME.eq(name))
                 .fetchOptional(this::mapRecordToSubscription);
     }
 
@@ -110,6 +113,7 @@ public class SubscriptionRepository {
     private Subscription mapRecordToSubscription(Record record) {
         return new Subscription(
                 record.get(Subscriptions.SUBSCRIPTIONS.ID),
+                record.get(Subscriptions.SUBSCRIPTIONS.PROFILE_ID),
                 record.get(Subscriptions.SUBSCRIPTIONS.NAME),
                 record.get(Subscriptions.SUBSCRIPTIONS.PRICE),
                 BillingPeriod.fromDisplayName(record.get(Subscriptions.SUBSCRIPTIONS.BILLING_PERIOD)),
@@ -117,6 +121,5 @@ public class SubscriptionRepository {
                 record.get(Subscriptions.SUBSCRIPTIONS.CATEGORY)
         );
     }
-
 
 }

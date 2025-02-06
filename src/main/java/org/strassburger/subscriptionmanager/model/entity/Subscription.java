@@ -4,6 +4,7 @@ import static org.strassburger.subscriptionmanager.util.PriceNormalizer.normaliz
 
 public class Subscription {
     private final int id;
+    private final int profileId;
     private String name;
     private double price;
     private double normalizedPrice;
@@ -11,8 +12,9 @@ public class Subscription {
     private Long startDate;
     private String category;
 
-    public Subscription(int id, String name, double price, BillingPeriod billingPeriod, Long startDate, String category) {
+    public Subscription(int id, int profileId, String name, double price, BillingPeriod billingPeriod, Long startDate, String category) {
         this.id = id;
+        this.profileId = profileId;
         this.name = name;
         this.price = price;
         this.normalizedPrice = normalizePrice(price, billingPeriod);
@@ -35,6 +37,10 @@ public class Subscription {
 
     public double getPrice() {
         return price;
+    }
+
+    public int getProfileId() {
+        return profileId;
     }
 
     public void setPrice(double price) {
@@ -67,7 +73,6 @@ public class Subscription {
     }
 
     public void setCategory(String category) { this.category = category; }
-
 
     @Override
     public String toString() {

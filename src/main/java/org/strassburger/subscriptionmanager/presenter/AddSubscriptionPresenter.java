@@ -2,6 +2,7 @@ package org.strassburger.subscriptionmanager.presenter;
 
 import org.strassburger.subscriptionmanager.model.DatabaseManager;
 import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
+import org.strassburger.subscriptionmanager.model.entity.Profile;
 import org.strassburger.subscriptionmanager.view.AddSubscriptionView;
 import org.strassburger.tui4j.formatting.TextFormatter;
 import org.strassburger.tui4j.input.validationrules.ValidationRule;
@@ -12,10 +13,12 @@ import java.util.Set;
 public class AddSubscriptionPresenter {
     private final AddSubscriptionView view;
     private final DatabaseManager dbManager;
+    private final Profile profile;
 
-    public AddSubscriptionPresenter(AddSubscriptionView view, DatabaseManager dbManager) {
+    public AddSubscriptionPresenter(AddSubscriptionView view, DatabaseManager dbManager, Profile profile) {
         this.view = view;
         this.dbManager = dbManager;
+        this.profile = profile;
     }
 
     public void start() {
@@ -27,7 +30,7 @@ public class AddSubscriptionPresenter {
         Long startDate = view.readStartDate();
         String category = view.chooseOrAddCategory(getCategoriesFromDB(dbManager));
 
-        dbManager.getSubscriptionRepository().addSubscription(name, price, billingPeriod, startDate, category);
+        dbManager.getSubscriptionRepository().addSubscription(profile.getId(), name, price, billingPeriod, startDate, category);
 
         view.sendSubscriptionAddSuccessMessage();
         view.enterToContinue();
@@ -42,7 +45,7 @@ public class AddSubscriptionPresenter {
         return new ValidationRule<String>() {
             @Override
             public boolean validate(String s) {
-                return dbManager.getSubscriptionRepository().getSubscriptionByName(s).isEmpty();
+                return dbManager.getSubscriptionRepository().getSubscriptionByName(profile.getId(), s).isEmpty();
             }
 
             @Override
@@ -61,7 +64,7 @@ public class AddSubscriptionPresenter {
     private Set<String> getCategoriesFromDB(DatabaseManager dbManager) {
         Set<String> categories = new HashSet<>();
 
-        dbManager.getSubscriptionRepository().getAllSubscriptions().forEach(subscription -> {
+        dbManager.getSubscriptionRepository().getAllSubscriptions(profile.getId()).forEach(subscription -> {
             categories.add(subscription.getCategory());
         });
 
