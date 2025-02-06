@@ -1,5 +1,6 @@
 package org.strassburger.subscriptionmanager.view;
 
+import org.strassburger.subscriptionmanager.model.DatabaseManager;
 import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
 import org.strassburger.tui4j.formatting.Printer;
 import org.strassburger.tui4j.formatting.TextFormatter;
@@ -15,6 +16,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AddSubscriptionView {
 
@@ -140,6 +143,58 @@ public class AddSubscriptionView {
         new ContinueInput()
                 .setLabel("Press ENTER to continue")
                 .read();
+    }
+
+    /**
+     * Asks User to choose between categories or to add a new category
+     * @return chosen category or runs methode askForNewCategory to add new category
+     */
+    public String chooseOrAddCategory(Set<String> existingCategories) {
+        SelectInput<String> selectInput = new SelectInput<String>()
+                .addOptions(existingCategories.stream().map(cat -> new SelectInput.Option<>(cat, cat)).toList())
+                .addOption("Add new category", "NEW")
+                .setLabel("Choose a category or add a new one:")
+                .setRetryOnInvalid(true);
+
+        String selection = selectInput.read();
+
+        if ("NEW".equals(selection)) {
+            return askForNewCategory();
+        }
+
+        return selection;
+    }
+
+    /**
+     * Prompts User to enter new Category
+     * @return A new Category with first letter capitalized
+     */
+    private String askForNewCategory() {
+        String newCategory = new TextInput()
+                .setLabel("Enter new category name:")
+                .setRetryOnInvalid(true)
+                .addValidationRules(
+                        TextValidationRules.minLength(1),
+                        TextValidationRules.maxLength(255),
+                        new ValidationRule<String>() {
+                            @Override
+                            public boolean validate(String s) {
+                                return !s.isBlank();
+                            }
+
+                            @Override
+                            public String getErrorMessage() {
+                                return "&cCategory must not be empty";
+                            }
+                        }
+                )
+                .read()
+                .trim()
+                .toLowerCase();
+
+
+
+        return newCategory.substring(0, 1).toUpperCase() + newCategory.substring(1);
     }
 
 }
