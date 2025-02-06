@@ -6,5 +6,7 @@ org.strassburger.subscriptionmanager.model
 org.strassburger.subscriptionmanager.model.entity
 org.strassburger.subscriptionmanager.model.repositories
 org.strassburger.subscriptionmanager.presenter
+org.strassburger.subscriptionmanager.presenter.profiles
 org.strassburger.subscriptionmanager.util
 org.strassburger.subscriptionmanager.view
+org.strassburger.subscriptionmanager.view.profiles
