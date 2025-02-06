@@ -54,7 +54,8 @@ public class AddSubscriptionView {
                             }
                         }
                 )
-                .read();
+                .read()
+                .trim();
     }
 
     /**

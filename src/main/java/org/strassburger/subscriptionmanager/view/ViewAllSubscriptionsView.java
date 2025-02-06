@@ -53,26 +53,26 @@ public class ViewAllSubscriptionsView {
         );
 
         for (Subscription subscription : subList) {
-            String startDateString = DateCalculator.convertLongToDate(subscription.getStartDate());
-
-            String nextBillingDateString = subscription.getStartDate() != null
-                    ? DateCalculator.convertLongToDate(
-                        DateCalculator.getNextBillingDate(subscription.getBillingPeriod(), subscription.getStartDate())
-                    )
-                    : "/";
-
             Printer.printfln(
                     rowFormat,
                     subscription.getName(),
                     String.format("%.2f", subscription.getPrice()) + subscription.getBillingPeriod().getPriceString(),
                     String.format("%.2f", subscription.getNormalizedPrice()) +BillingPeriod.MONTHLY.getPriceString(),
-                    startDateString,
-                    nextBillingDateString,
+                    DateCalculator.convertLongToDate(subscription.getStartDate()),
+                    getNextBillingDateString(subscription),
                     subscription.getCategory()
             );
         }
 
         Printer.println("");
+    }
+
+    private String getNextBillingDateString(Subscription subscription) {
+        return subscription.getStartDate() != null
+                ? DateCalculator.convertLongToDate(
+                    DateCalculator.getNextBillingDate(subscription.getBillingPeriod(), subscription.getStartDate())
+                )
+                : "/";
     }
 
     private List<Integer> calculateColumnWidths(List<String> headers, List<Subscription> subList) {
@@ -83,15 +83,20 @@ public class ViewAllSubscriptionsView {
         }
 
         for (Subscription subscription : subList) {
+            // Name
             columnWidths.set(0, Math.max(columnWidths.get(0), subscription.getName().length()));
+            // Price
             columnWidths.set(1, Math.max(columnWidths.get(1), (
                     String.format("%.2f", subscription.getPrice()) + subscription.getBillingPeriod().getPriceString()
             ).length()));
+            // Normalized Price
             columnWidths.set(2, Math.max(columnWidths.get(2), (
                     String.format("%.2f", subscription.getNormalizedPrice()) + BillingPeriod.MONTHLY.getPriceString()
             ).length()));
+            // Start date
             columnWidths.set(3, Math.max(columnWidths.get(3), DateCalculator.convertLongToDate(subscription.getStartDate()).length()));
-            columnWidths.set(4, 16);
+            // Next billing date
+            columnWidths.set(4, Math.max(columnWidths.get(4), getNextBillingDateString(subscription).length()));
         }
 
         return columnWidths;
