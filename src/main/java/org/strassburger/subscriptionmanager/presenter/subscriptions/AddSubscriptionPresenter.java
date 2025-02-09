@@ -1,9 +1,9 @@
-package org.strassburger.subscriptionmanager.presenter;
+package org.strassburger.subscriptionmanager.presenter.subscriptions;
 
 import org.strassburger.subscriptionmanager.model.DatabaseManager;
 import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
 import org.strassburger.subscriptionmanager.model.entity.Profile;
-import org.strassburger.subscriptionmanager.view.AddSubscriptionView;
+import org.strassburger.subscriptionmanager.view.subscriptions.AddSubscriptionView;
 import org.strassburger.tui4j.formatting.TextFormatter;
 import org.strassburger.tui4j.input.validationrules.ValidationRule;
 

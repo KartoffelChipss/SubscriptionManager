@@ -1,4 +1,4 @@
-package org.strassburger.subscriptionmanager.view;
+package org.strassburger.subscriptionmanager.view.subscriptions;
 
 import org.strassburger.tui4j.formatting.Printer;
 import org.strassburger.tui4j.input.ContinueInput;

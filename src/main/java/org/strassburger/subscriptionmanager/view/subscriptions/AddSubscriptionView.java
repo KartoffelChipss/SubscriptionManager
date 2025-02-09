@@ -1,4 +1,4 @@
-package org.strassburger.subscriptionmanager.view;
+package org.strassburger.subscriptionmanager.view.subscriptions;
 
 import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
 import org.strassburger.tui4j.formatting.Printer;

@@ -2,10 +2,13 @@ package org.strassburger.subscriptionmanager.presenter;
 
 import org.strassburger.subscriptionmanager.model.DatabaseManager;
 import org.strassburger.subscriptionmanager.model.entity.Profile;
-import org.strassburger.subscriptionmanager.view.AddSubscriptionView;
-import org.strassburger.subscriptionmanager.view.DeleteSubscriptionView;
+import org.strassburger.subscriptionmanager.presenter.subscriptions.AddSubscriptionPresenter;
+import org.strassburger.subscriptionmanager.presenter.subscriptions.DeleteSubscriptionPresenter;
+import org.strassburger.subscriptionmanager.presenter.subscriptions.ViewAllSubscriptionsPresenter;
+import org.strassburger.subscriptionmanager.view.subscriptions.AddSubscriptionView;
+import org.strassburger.subscriptionmanager.view.subscriptions.DeleteSubscriptionView;
 import org.strassburger.subscriptionmanager.view.MainMenuView;
-import org.strassburger.subscriptionmanager.view.ViewAllSubscriptionsView;
+import org.strassburger.subscriptionmanager.view.subscriptions.ViewAllSubscriptionsView;
 
 public class MainMenuPresenter {
     private final MainMenuView view;

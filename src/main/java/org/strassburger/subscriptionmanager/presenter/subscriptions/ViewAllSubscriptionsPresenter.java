@@ -1,11 +1,11 @@
-package org.strassburger.subscriptionmanager.presenter;
+package org.strassburger.subscriptionmanager.presenter.subscriptions;
 
 import org.strassburger.subscriptionmanager.model.DatabaseManager;
 import org.strassburger.subscriptionmanager.model.entity.Profile;
 import org.strassburger.subscriptionmanager.model.entity.Subscription;
 import org.strassburger.subscriptionmanager.model.entity.SubscriptionOrder;
 import org.strassburger.subscriptionmanager.util.DateCalculator;
-import org.strassburger.subscriptionmanager.view.ViewAllSubscriptionsView;
+import org.strassburger.subscriptionmanager.view.subscriptions.ViewAllSubscriptionsView;
 
 import java.util.Comparator;
 import java.util.List;
