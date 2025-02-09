@@ -4,6 +4,7 @@ import org.strassburger.subscriptionmanager.model.entity.BillingPeriod;
 import org.strassburger.subscriptionmanager.model.entity.Subscription;
 import org.strassburger.subscriptionmanager.model.entity.SubscriptionOrder;
 import org.strassburger.subscriptionmanager.util.DateCalculator;
+import org.strassburger.subscriptionmanager.util.TablePrinter;
 import org.strassburger.tui4j.formatting.Printer;
 import org.strassburger.tui4j.input.ContinueInput;
 import org.strassburger.tui4j.input.SelectInput;
@@ -41,28 +42,19 @@ public class ViewAllSubscriptionsView {
      */
     public void showAllSubscriptions(List<Subscription> subList) {
         List<String> headers = List.of("Name", "Price", "Normalized Price", "Start date", "Next billing date", "Category");
-        List<Integer> columnWidths = calculateColumnWidths(headers, subList);
 
-        printHeader(headers, columnWidths);
+        List<List<String>> rows = subList.stream()
+                .map(subscription -> List.of(
+                        subscription.getName(),
+                        String.format("%.2f", subscription.getPrice()) + subscription.getBillingPeriod().getPriceString(),
+                        String.format("%.2f", subscription.getNormalizedPrice()) + BillingPeriod.MONTHLY.getPriceString(),
+                        DateCalculator.convertLongToDate(subscription.getStartDate()),
+                        getNextBillingDateString(subscription),
+                        subscription.getCategory()
+                ))
+                .toList();
 
-        printSeparator(columnWidths);
-
-        String rowFormat = String.format(
-                " %%-%ds &8|&r %%-%ds &8|&r %%-%ds &8|&r %%-%ds &8|&r %%-%ds &8|&r %%-%ds",
-                columnWidths.get(0), columnWidths.get(1), columnWidths.get(2), columnWidths.get(3), columnWidths.get(4), columnWidths.get(5)
-        );
-
-        for (Subscription subscription : subList) {
-            Printer.printfln(
-                    rowFormat,
-                    subscription.getName(),
-                    String.format("%.2f", subscription.getPrice()) + subscription.getBillingPeriod().getPriceString(),
-                    String.format("%.2f", subscription.getNormalizedPrice()) +BillingPeriod.MONTHLY.getPriceString(),
-                    DateCalculator.convertLongToDate(subscription.getStartDate()),
-                    getNextBillingDateString(subscription),
-                    subscription.getCategory()
-            );
-        }
+        new TablePrinter(headers, rows).printTable();
 
         Printer.println("");
     }
@@ -73,47 +65,6 @@ public class ViewAllSubscriptionsView {
                     DateCalculator.getNextBillingDate(subscription.getBillingPeriod(), subscription.getStartDate())
                 )
                 : "/";
-    }
-
-    private List<Integer> calculateColumnWidths(List<String> headers, List<Subscription> subList) {
-        List<Integer> columnWidths = new ArrayList<>(Collections.nCopies(headers.size(), 0));
-
-        for (int i = 0; i < headers.size(); i++) {
-            columnWidths.set(i, headers.get(i).length());
-        }
-
-        for (Subscription subscription : subList) {
-            // Name
-            columnWidths.set(0, Math.max(columnWidths.get(0), subscription.getName().length()));
-            // Price
-            columnWidths.set(1, Math.max(columnWidths.get(1), (
-                    String.format("%.2f", subscription.getPrice()) + subscription.getBillingPeriod().getPriceString()
-            ).length()));
-            // Normalized Price
-            columnWidths.set(2, Math.max(columnWidths.get(2), (
-                    String.format("%.2f", subscription.getNormalizedPrice()) + BillingPeriod.MONTHLY.getPriceString()
-            ).length()));
-            // Start date
-            columnWidths.set(3, Math.max(columnWidths.get(3), DateCalculator.convertLongToDate(subscription.getStartDate()).length()));
-            // Next billing date
-            columnWidths.set(4, Math.max(columnWidths.get(4), getNextBillingDateString(subscription).length()));
-        }
-
-        return columnWidths;
-    }
-
-    private void printHeader(List<String> headers, List<Integer> columnWidths) {
-        String headerFormat = String.format(
-                " &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds &8|&r &l%%-%ds",
-                columnWidths.get(0), columnWidths.get(1), columnWidths.get(2), columnWidths.get(3), columnWidths.get(4), columnWidths.get(5)
-        );
-        Printer.printfln(headerFormat, headers.get(0), headers.get(1), headers.get(2), headers.get(3), headers.get(4), headers.get(5));
-    }
-
-    private void printSeparator(List<Integer> columnWidths) {
-        // Total length: sum of all column widths + 3 spaces between each column + 2 spaces in front and at the end
-        int totalLength = columnWidths.stream().reduce(0, Integer::sum) + (columnWidths.size() - 1) * 3 + 2;
-        Printer.println("&8-".repeat(totalLength));
     }
 
     public void sendNoSubscriptionsAvailableMessage() {
