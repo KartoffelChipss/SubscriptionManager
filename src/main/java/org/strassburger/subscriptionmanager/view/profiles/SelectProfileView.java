@@ -15,6 +15,11 @@ public class SelectProfileView {
         Printer.println("");
     }
 
+    /**
+     * Reads the profile id from the user.
+     * @param profiles The list of profiles to choose from.
+     * @return The id of the selected profile or -1 if the user wants to exit or 0 if the user wants to manage profiles.
+     */
     public int readProfileId(List<Profile> profiles) {
         SelectInput<Integer> select = new SelectInput<Integer>()
                 .setLabel("Profile: ")
@@ -22,8 +27,7 @@ public class SelectProfileView {
                         p -> new SelectInput.Option<>(p.getName(),p.getId())
                 ).toList());
 
-        // TODO: Implement option to add or delete profiles (use negative numbers)
-
+        select.addOption("Manage Profiles", 0);
         select.addOption("Exit", -1);
 
         return select.read();

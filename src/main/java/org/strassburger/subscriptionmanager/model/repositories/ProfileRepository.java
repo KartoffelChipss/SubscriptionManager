@@ -6,6 +6,7 @@ import org.strassburger.subscriptionmanager.jooq.tables.Profiles;
 import org.strassburger.subscriptionmanager.model.entity.Profile;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ProfileRepository {
     private final DSLContext dsl;
@@ -29,10 +30,10 @@ public class ProfileRepository {
      * @param username The username of the profile.
      * @return The profile with the given username or null if no profile with the given username exists.
      */
-    public Profile getProfile(String username) {
+    public Optional<Profile> getProfile(String username) {
         return dsl.selectFrom(Profiles.PROFILES)
                 .where(Profiles.PROFILES.NAME.eq(username))
-                .fetchOne(this::mapRecordToProfile);
+                .fetchOptional(this::mapRecordToProfile);
     }
 
     /**
@@ -40,10 +41,10 @@ public class ProfileRepository {
      * @param id The id of the profile.
      * @return The profile with the given id or null if no profile with the given id exists.
      */
-    public Profile getProfile(int id) {
+    public Optional<Profile> getProfile(int id) {
         return dsl.selectFrom(Profiles.PROFILES)
                 .where(Profiles.PROFILES.ID.eq(id))
-                .fetchOne(this::mapRecordToProfile);
+                .fetchOptional(this::mapRecordToProfile);
     }
 
     /**
