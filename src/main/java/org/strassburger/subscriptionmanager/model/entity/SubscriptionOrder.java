@@ -3,7 +3,8 @@ package org.strassburger.subscriptionmanager.model.entity;
 public enum SubscriptionOrder {
     NORMALIZED_PRICE("Normalized Price"),
     NEXT_BILLING_DATE("Next billing date"),
-    NAME("Name");
+    NAME("Name"),
+    CATEGORY("Category");
 
     private final String displayName;
 

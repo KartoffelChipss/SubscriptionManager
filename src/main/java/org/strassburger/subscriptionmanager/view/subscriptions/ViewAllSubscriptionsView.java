@@ -40,9 +40,25 @@ public class ViewAllSubscriptionsView {
      * Shows all subscriptions in the UI.
      * @param subList List of subscriptions to show.
      */
-    public void showAllSubscriptions(List<Subscription> subList) {
-        List<String> headers = List.of("Name", "Price", "Normalized Price", "Start date", "Next billing date", "Category");
+    public void showAllSubscriptions(List<Subscription> subList,SubscriptionOrder subscriptionOrder) {
 
+        if (subscriptionOrder == SubscriptionOrder.CATEGORY) {
+            List<String> headers = List.of("Category", "Name", "Price", "Normalized Price", "Start date", "Next billing date");
+
+            List<List<String>> rows = subList.stream()
+                    .map(subscription -> List.of(
+                            subscription.getCategory(),
+                            subscription.getName(),
+                            String.format("%.2f", subscription.getPrice()) + subscription.getBillingPeriod().getPriceString(),
+                            String.format("%.2f", subscription.getNormalizedPrice()) + BillingPeriod.MONTHLY.getPriceString(),
+                            DateCalculator.convertLongToDate(subscription.getStartDate()),
+                            getNextBillingDateString(subscription)
+                    ))
+                    .toList();
+
+            new TablePrinter(headers, rows).printTable();
+        }else {
+            List<String> headers = List.of("Name", "Price", "Normalized Price", "Start date", "Next billing date", "Category");
         List<List<String>> rows = subList.stream()
                 .map(subscription -> List.of(
                         subscription.getName(),
@@ -55,7 +71,7 @@ public class ViewAllSubscriptionsView {
                 .toList();
 
         new TablePrinter(headers, rows).printTable();
-
+    }
         Printer.println("");
     }
 

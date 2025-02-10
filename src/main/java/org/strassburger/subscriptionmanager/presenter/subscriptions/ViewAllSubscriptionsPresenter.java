@@ -31,13 +31,14 @@ public class ViewAllSubscriptionsPresenter {
             case NORMALIZED_PRICE -> Comparator.comparingDouble(sub -> (-1) * sub.getNormalizedPrice()); // negation for desc. order
             case NEXT_BILLING_DATE -> Comparator.comparingLong(sub -> DateCalculator.getNextBillingDate(sub.getBillingPeriod(), System.currentTimeMillis()));
             case NAME -> Comparator.comparing(Subscription::getName);
+            case CATEGORY -> Comparator.comparing(Subscription::getCategory);
         };
         subscriptionList.sort(comp);
 
         if (subscriptionList.isEmpty()) {
             view.sendNoSubscriptionsAvailableMessage();
         } else {
-            view.showAllSubscriptions(subscriptionList);
+            view.showAllSubscriptions(subscriptionList,subscriptionOrder);
         }
 
         view.enterToContinue();
