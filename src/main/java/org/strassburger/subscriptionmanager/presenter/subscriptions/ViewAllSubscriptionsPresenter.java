@@ -38,7 +38,7 @@ public class ViewAllSubscriptionsPresenter {
         if (subscriptionList.isEmpty()) {
             view.sendNoSubscriptionsAvailableMessage();
         } else {
-            view.showAllSubscriptions(subscriptionList,subscriptionOrder);
+            view.showAllSubscriptions(subscriptionList, subscriptionOrder);
         }
 
         view.enterToContinue();

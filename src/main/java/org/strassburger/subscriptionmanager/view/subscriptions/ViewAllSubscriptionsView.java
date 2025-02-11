@@ -41,11 +41,13 @@ public class ViewAllSubscriptionsView {
      * @param subList List of subscriptions to show.
      */
     public void showAllSubscriptions(List<Subscription> subList,SubscriptionOrder subscriptionOrder) {
+        List<String> headers;
+        List<List<String>> rows;
 
         if (subscriptionOrder == SubscriptionOrder.CATEGORY) {
-            List<String> headers = List.of("Category", "Name", "Price", "Normalized Price", "Start date", "Next billing date");
+            headers = List.of("Category", "Name", "Price", "Normalized Price", "Start date", "Next billing date");
 
-            List<List<String>> rows = subList.stream()
+            rows = subList.stream()
                     .map(subscription -> List.of(
                             subscription.getCategory(),
                             subscription.getName(),
@@ -56,22 +58,22 @@ public class ViewAllSubscriptionsView {
                     ))
                     .toList();
 
-            new TablePrinter(headers, rows).printTable();
-        }else {
-            List<String> headers = List.of("Name", "Price", "Normalized Price", "Start date", "Next billing date", "Category");
-        List<List<String>> rows = subList.stream()
-                .map(subscription -> List.of(
-                        subscription.getName(),
-                        String.format("%.2f", subscription.getPrice()) + subscription.getBillingPeriod().getPriceString(),
-                        String.format("%.2f", subscription.getNormalizedPrice()) + BillingPeriod.MONTHLY.getPriceString(),
-                        DateCalculator.convertLongToDate(subscription.getStartDate()),
-                        getNextBillingDateString(subscription),
-                        subscription.getCategory()
-                ))
-                .toList();
+        } else {
+            headers = List.of("Name", "Price", "Normalized Price", "Start date", "Next billing date", "Category");
+            rows = subList.stream()
+                    .map(subscription -> List.of(
+                            subscription.getName(),
+                            String.format("%.2f", subscription.getPrice()) + subscription.getBillingPeriod().getPriceString(),
+                            String.format("%.2f", subscription.getNormalizedPrice()) + BillingPeriod.MONTHLY.getPriceString(),
+                            DateCalculator.convertLongToDate(subscription.getStartDate()),
+                            getNextBillingDateString(subscription),
+                            subscription.getCategory()
+                    ))
+                    .toList();
+
+        }
 
         new TablePrinter(headers, rows).printTable();
-    }
         Printer.println("");
     }
 
