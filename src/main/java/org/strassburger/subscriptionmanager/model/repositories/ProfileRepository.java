@@ -72,6 +72,17 @@ public class ProfileRepository {
     }
 
     /**
+     * Delete a profile by its username.
+     * @param username The username of the profile.
+     * @return True if the profile was deleted successfully, false otherwise.
+     */
+    public boolean deleteProfile(String username) {
+        return dsl.deleteFrom(Profiles.PROFILES)
+                .where(Profiles.PROFILES.NAME.eq(username))
+                .execute() == 1;
+    }
+
+    /**
      * Map a database record to a profile.
      * @param record The database record.
      * @return The profile.

@@ -17,7 +17,7 @@ public class ManageProfilesView {
                 new SelectInput<ManageProfilesPresenter.ManageProfilesAction>()
                 .setLabel("Action: ")
                 .addOption("Create Profile", ManageProfilesPresenter.ManageProfilesAction.ADD_PROFILE)
-                //.addOption("Delete Profile", ManageProfilesPresenter.ManageProfilesAction.DELETE_PROFILE)
+                .addOption("Delete Profile", ManageProfilesPresenter.ManageProfilesAction.DELETE_PROFILE)
                 //.addOption("Edit Profile", ManageProfilesPresenter.ManageProfilesAction.EDIT_PROFILE)
                 .addOption("Back", ManageProfilesPresenter.ManageProfilesAction.BACK);
 
