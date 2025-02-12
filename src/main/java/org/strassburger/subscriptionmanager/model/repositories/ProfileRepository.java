@@ -72,6 +72,19 @@ public class ProfileRepository {
     }
 
     /**
+     * Update the name of a profile.
+     * @param id The id of the profile.
+     * @param newName The new name of the profile.
+     * @return True if the profile was updated successfully, false otherwise.
+     */
+    public boolean updateProfileName(int id, String newName) {
+        return dsl.update(Profiles.PROFILES)
+                .set(Profiles.PROFILES.NAME, newName)
+                .where(Profiles.PROFILES.ID.eq(id))
+                .execute() == 1;
+    }
+
+    /**
      * Delete a profile by its username.
      * @param username The username of the profile.
      * @return True if the profile was deleted successfully, false otherwise.

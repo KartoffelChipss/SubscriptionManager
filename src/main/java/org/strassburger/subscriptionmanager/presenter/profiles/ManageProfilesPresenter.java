@@ -3,6 +3,7 @@ package org.strassburger.subscriptionmanager.presenter.profiles;
 import org.strassburger.subscriptionmanager.model.DatabaseManager;
 import org.strassburger.subscriptionmanager.view.profiles.AddProfileView;
 import org.strassburger.subscriptionmanager.view.profiles.DeleteProfileView;
+import org.strassburger.subscriptionmanager.view.profiles.EditProfileView;
 import org.strassburger.subscriptionmanager.view.profiles.ManageProfilesView;
 
 public class ManageProfilesPresenter {
@@ -26,6 +27,9 @@ public class ManageProfilesPresenter {
                     break;
                 case DELETE_PROFILE:
                     new DeletProfilePresenter(new DeleteProfileView(), dbManager).start();
+                    break;
+                case EDIT_PROFILE:
+                    new EditProfilePresenter(new EditProfileView(), dbManager).start();
                     break;
                 default:
                     return;
